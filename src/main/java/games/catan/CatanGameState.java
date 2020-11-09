@@ -4,7 +4,9 @@ import core.AbstractParameters;
 import core.AbstractGameState;
 import core.components.Area;
 import core.components.Component;
+import core.components.Deck;
 import core.interfaces.IGamePhase;
+import games.catan.components.cards.ResourceCard;
 
 import java.util.*;
 
@@ -15,6 +17,8 @@ public class CatanGameState extends AbstractGameState {
     protected int knights[]; // knight count for each player
     protected int largestArmy = -1; // playerID of the player currently holding the largest army
     protected int longestRoad = -1; // playerID of the player currently holding the longest road
+    protected Deck<ResourceCard> bankDeck; // deck of resource cards held by the bank
+    protected List<Deck<ResourceCard>> playerDecks; // decks of resource cards held by the players;
     int rollValue;
 
     // In Catan the "setup" phase is when each player can place a road with a settlement twice. The robber phase is when
@@ -42,6 +46,8 @@ public class CatanGameState extends AbstractGameState {
     @Override
     protected List<Component> _getAllComponents() {
         List<Component> components = new ArrayList<>(); // areas.values()
+        components.add(bankDeck);
+        components.addAll(playerDecks);
 //        components.add(tempDeck);
 //        components.add(world);
         return components;

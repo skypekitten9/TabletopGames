@@ -6,6 +6,7 @@ import core.properties.Property;
 import core.properties.PropertyBoolean;
 import core.properties.PropertyInt;
 import core.properties.PropertyString;
+import games.catan.components.cards.ResourceCard;
 import utilities.Hash;
 
 import java.util.ArrayList;
@@ -64,13 +65,40 @@ public class CatanData extends AbstractGameData {
             areas.add(area);
         }
 
-        // create resource cards
-        Deck<Card> resourceDeck = new Deck("resourceDeck");
+//        // create resource cards
+//        Deck<Card> resourceDeck = new Deck("resourceDeck");
+//        for (CatanParameters.Resources res: CatanParameters.Resources.values()) {
+//            for (int i = 0; i < params.n_resource_cards; i++) {
+//                Card c = new Card();
+//                System.out.println(res.name());
+//                c.setProperty(new PropertyString("cardType", res.name()));
+//                resourceDeck.add(c);
+//            }
+//        }
+
+        Deck<ResourceCard> resourceDeck = new Deck<ResourceCard>("resourceDeck");
         for (CatanParameters.Resources res: CatanParameters.Resources.values()) {
             for (int i = 0; i < params.n_resource_cards; i++) {
-                Card c = new Card();
-                c.setProperty(new PropertyString("cardType", res.name()));
-                resourceDeck.add(c);
+                switch(res.name())
+                {
+                    case "BRICK":
+                        resourceDeck.add(new ResourceCard(ResourceCard.ResourceCardType.Brick));
+                        break;
+                    case "LUMBER":
+                        resourceDeck.add(new ResourceCard(ResourceCard.ResourceCardType.Lumber));
+                        break;
+                    case "ORE":
+                        resourceDeck.add(new ResourceCard(ResourceCard.ResourceCardType.Ore));
+                        break;
+                    case "GRAIN":
+                        resourceDeck.add(new ResourceCard(ResourceCard.ResourceCardType.Grain));
+                        break;
+                    case "WOOL":
+                        resourceDeck.add(new ResourceCard(ResourceCard.ResourceCardType.Wool));
+                        break;
+                    default:
+                        System.out.println("Error in JSON data for resource cards, no matching type.");
+                }
             }
         }
 
@@ -98,7 +126,7 @@ public class CatanData extends AbstractGameData {
 
 
         // merge decks
-        decks.add(resourceDeck);
+        //decks.add(resourceDeck);
         decks.addAll(developmentDeck);
 
 

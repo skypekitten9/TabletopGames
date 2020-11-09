@@ -46,6 +46,8 @@ public class CatanForwardModel extends AbstractForwardModel {
             state.areas.put(i, playerArea);
         }
 
+        // TODO (oh) initialise decks
+
         // Initialize the game area
         Area gameArea = new Area(-1, "Game Area");
         state.areas.put(-1, gameArea);
