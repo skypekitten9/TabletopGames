@@ -19,6 +19,9 @@ public class CatanGameState extends AbstractGameState {
     protected int longestRoad = -1; // playerID of the player currently holding the longest road
     int rollValue;
 
+    // keep track of each player's roads using a linked list
+    private ArrayList<LinkedList<Road>> Roads;
+
     // In Catan the "setup" phase is when each player can place a road with a settlement twice. The robber phase is when
     // the player rolls a 7. The discarding phase is when the robber is activate and a player has more than 7 resource
     // cards, in this case half of the cards have to be discarded. the TradeReaction is when another player makes an
@@ -33,12 +36,12 @@ public class CatanGameState extends AbstractGameState {
     // Collection of areas, mapped to player ID, -1 is the general game area containing the board, counters and several decks.
     HashMap<Integer, Area> areas;
 
-    // todo get turnorder right
     public CatanGameState(AbstractParameters pp, int nPlayers) {
         super(pp, new CatanTurnOrder(nPlayers, ((CatanParameters)pp).n_actions_per_turn));
         data = new CatanData((CatanParameters)pp);
         data.load(((CatanParameters)gameParameters).getDataPath());
         scores = new int[((CatanParameters) pp).n_players];
+        setGamePhase(CatanGamePhase.Setup);
     }
 
     @Override

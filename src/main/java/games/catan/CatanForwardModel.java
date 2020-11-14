@@ -77,25 +77,14 @@ public class CatanForwardModel extends AbstractForwardModel {
         ArrayList<AbstractAction> actions = new ArrayList<>();
         CatanGameState gs = (CatanGameState)gameState;
         if (gs.getGamePhase() == CatanGameState.CatanGamePhase.Setup){
-            System.out.println("setting settlements with roads");
             // TODO (mb) in initial phase each player places 2 roads and 2 settlements on the board
+            System.out.println("setting settlements with roads");
+            return getSetupActions(gs);
         }
         if (gs.getGamePhase() == AbstractGameState.DefaultGamePhase.Main){
 //            actions.add(new DoNothing());
         }
 
-        // todo (mb) instead of random determine where to build settlement
-        Random rnd = new Random();
-        int x = rnd.nextInt(7);
-        int y = rnd.nextInt(7);
-        int vertex = rnd.nextInt(HEX_SIDES);
-        actions.add(new BuildSettlement(x, y, vertex, gameState.getCurrentPlayer()));
-
-        // todo (mb) instead of random determine where the player can put roads
-        x = rnd.nextInt(7);
-        y = rnd.nextInt(7);
-        int edge = rnd.nextInt(HEX_SIDES);
-//        actions.add(new BuildRoad(x, y, edge, gameState.getCurrentPlayer()));
 
 
         // todo (mb) some notes on rules
@@ -221,6 +210,40 @@ public class CatanForwardModel extends AbstractForwardModel {
         int num2 = r2.nextInt(6);
 
         return num1 + num2 + 2;
+    }
+
+    public boolean isValidSettlement(CatanTile tile, int vertex, CatanTile[][] board){
+        // todo (mb) implement this
+        // checks if a settlement is within 2 edges away from another settlement
+        // return true if it is valid to place the settlement on the selected tile
+
+        return false;
+    }
+
+    public int getRoadLength(){
+        // given a road (edge) it follows until the end and calculate its distance
+
+        return -1;
+    }
+
+    public List<AbstractAction> getSetupActions(CatanGameState gs){
+        // TODO (mb) get all possible actions to place a settlement
+        // 2 phases: first place a settlement then a road
+        ArrayList<AbstractAction> actions = new ArrayList();
+        CatanTile[][] board = gs.getBoard();
+        for (int x = 0; x < board.length; x++) {
+            for (int y = 0; y < board[x].length; y++) {
+                CatanTile tile = board[x][y];
+                Settlement[] settlements = tile.getSettlements();
+                for (int i  = 0; i < settlements.length; i++){
+                    if (settlements[i].getOwner() != -1){
+                        actions.add(new BuildSettlement(x, y, i, gs.getCurrentPlayer()));
+                    }
+                }
+            }
+        }
+
+        return actions;
     }
 
 }
